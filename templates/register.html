@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Signup {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Signup</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button class="btn btn-outline-info">Submit</button>
+    <a href="{% url 'login' %}">I have already an account</a>
+    {% for msg in messages %}
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+
+        {{ message }}
+
+    </div>
+    {% endfor %}
+</form>
+</div>
+
+<style>
+    .errorlist {
+        color: red;
+    }
+    #fname {
+        border-color: brown;
+    }
+</style>
+
+{% endblock content %}
