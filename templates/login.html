@@ -1,21 +1,104 @@
 {% extends 'base.html' %}
-{% block title %} {% endblock title %}
+{% load static %}
+{% block title %} Login {% endblock title %}
 
 {% block content %}
 
+	<img class="wave" src="{% static 'img/wave.png' %}">
+	<div class="container">
+		<div class="img">
+			<img src="{% static 'img/bg.svg' %}">
+		</div>
+		<div class="login-content">
 
-<div class="container">
-<h1>Login</h1>
-<form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    {% if error %}
-        <p class="text-danger">{{error}}</p>
-    {% endif %}
-    <button class="btn btn-outline-info">Submit</button>
-    <a href="{% url 'register' %}">Create a new account</a>
-    
-</form>
-</div>
+			<form action="" method="POST">
+				{% csrf_token %}
+				<img src="{% static 'img/avatar.svg' %}">
+				<h2 class="title">Login</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+						<h5>{{ form.username.label }}</h5>
+						<img id="login-username-input" onfocus="usernameFunc()" onblur="hai()">{{ form.username }}</img>
+					</div>
+				</div>
+				<small class="text-danger" id="login-uname-required">Username required</small>
+				<div class="input-div pass">
+					<div class="i"> 
+						<i class="fas fa-lock"></i>
+					</div>
+					<div class="div">
+						<h5>{{ form.password.label }}</h5>
+						<img id="login-password-input">{{ form.password }}</img>
+					</div>
+            	</div>
+				<small class="text-danger" id="login-pword-required">Password required</small>
+            	<a href="{% url 'register' %}"><span>Not a member yet?</span> Join now</a>
+            	<input type="submit" class="btn" value="Login" onclick="loginBtn()">
+            </form>
+
+        </div>
+		
+    </div>
+
+	<style>
+		#login-uname-required {
+			visibility: hidden;
+		}
+		#login-pword-required {
+			visibility: hidden;
+		}
+	</style>
+	
+<script>
+	
+	function hai() {
+		var loginUsernameInput = document.getElementById('login-username-input').value
+		console.log("-------" + loginUsernameInput)
+	}
+	
+	function usernameFunc() {
+		var numbers = /^[0-9]+$/;
+		var letters = /^[A-Za-z]+$/;
+		var letterNumber = /^[0-9a-zA-Z]+$/;
+		var symbol = /^[a-zA-Z0-9.]+@/;
+
+		var loginUsernameInput = document.getElementById('login-username-input').value
+		var loginUnameRequired = document.getElementById("login-uname-required")
+
+		if (loginUsernameInput.match(letterNumber)) {
+			loginUnameRequired.style.visibility = "hidden"
+		} else if (!loginUsernameInput.match(letterNumber)) {
+			loginUnameRequired.style.visibility = "visible"
+		}
+	}
+
+	function loginBtn(){
+		var numbers = /^[0-9]+$/;
+		var letters = /^[A-Za-z]+$/;
+		var letterNumber = /^[0-9a-zA-Z]+$/;
+		var symbol = /^[a-zA-Z0-9.]+@/;
+		
+		var loginUsernameInput = document.getElementById("login-username-input").value
+		var loginPasswordInput = document.getElementById("login-password-input").value
+
+		var loginUnameRequired = document.getElementById("login-uname-required")
+		var loginPwordRequired = document.getElementById("login-pword-required")
+
+		if (loginUsernameInput.match(letterNumber)) {
+			loginUnameRequired.style.visibility = "visible"
+		} else if (!loginUnameRequired.match(letterNumber)) {
+			loginUnameRequired.style.visibility = "visible"
+		}
+		if (loginPasswordInput.match(letterNumber)) {
+			loginPwordRequired.style.visibility = "hidden"
+		} else {
+			loginPwordRequired.style.visibility = "visible"
+		}
+	}
+</script>
+
 
 {% endblock content %}

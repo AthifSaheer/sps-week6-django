@@ -1,0 +1,28 @@
+{% extends 'admintemplate/base.html' %}
+{% block title %} Admin Login {% endblock title %}
+
+{% block content %}
+
+
+<div class="container">
+<h1>Admin Login</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col">
+            <label for="">User name</label>
+            <input type="text" class="form-control" placeholder="User name" name="username">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<a href="{% url 'register' %}">Create a new account</a>
+</div>
+
+{% endblock content %}

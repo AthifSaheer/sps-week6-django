@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
-{% block title %} {% endblock title %}
+{% load static %}
+{% block title %} Home {% endblock title %}
 
 {% block content %}
 
-<h1>Home</h1>
+
+<img class="wave" src="{% static 'img/wave.png' %}">
+<div class="container">
+    <div class="img">
+        <img src="{% static 'img/bg.svg' %}">
+    </div>
+    <div class="login-content">
+
+        <form action="" method="POST">
+            <img src="{% static 'img/avatar.svg' %}">
+            <h2 class="title">Welcome {{ user.username }}</h2>
+        </form>
+    </div>
+</div>
 
 {% endblock content %}

@@ -1,26 +1,39 @@
 from django import forms
-from .models import Customer
 from django.contrib.auth.models import User
 
 
-class UserRegistrationForm(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput())
-    password1 = forms.CharField(widget=forms.PasswordInput())
-    password2 = forms.CharField(widget=forms.PasswordInput())
-    email = forms.CharField(widget=forms.EmailInput())
+class UserRegistrationForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Username")
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Password")
+    password_confirmation = forms.CharField(widget=forms.PasswordInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Confirmation Password")
 
-    class Meta:
-        model = Customer
-        fields = ['full_name', 'username', 'email', 'password1', 'password2']
 
     def clean_username(self):
         uname = self.cleaned_data.get("username")
         if User.objects.filter(username=uname).exists():
             raise forms.ValidationError("Username already exists")
-        
         return uname
 
 class UserLoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput())
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Username")
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "class": "input",
+        "type": "password",
+    }), label="Password")
 
