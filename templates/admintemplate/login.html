@@ -3,26 +3,74 @@
 
 {% block content %}
 
+<style>
+
+#login-div {
+    background: rgba(243, 243, 243, 0.877);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border-radius: .5cm;
+    margin-top: 30px;
+}
+</style>
 
 <div class="container">
-<h1>Admin Login</h1>
-<form method="POST">
-    {% csrf_token %}
-    <div class="form-row">
-        <div class="col">
-            <label for="">User name</label>
-            <input type="text" class="form-control" placeholder="User name" name="username">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 id="admin-text">Admin Login</h1>
+        </div>
+        <p class="text-danger text-center">{{ error }}</p>
+        <div class="col-md-4" id="login-div">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col">
+                        <label for="">User name</label>
+                        <input type="text" class="form-control" placeholder="User name" name="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Password</label>
+                    <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                
+                <button type="submit" class="btn btn-outline-info btn-sm mt-2">Submit</button>
+            </form>
         </div>
     </div>
-
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-<a href="{% url 'register' %}">Create a new account</a>
 </div>
 
+<script>
+
+
+
+function usernameFunction() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+    
+    var loginUsernameInput = document.getElementsByName('login-username-input')[0].value;
+    var loginUnameRequired = document.getElementById("login-uname-required")
+    var loginUnameUnique = document.getElementById("login-uname-unique")
+    console.log(loginUnameUnique)
+
+    if (loginUsernameInput.match(letters)) {
+        loginUnameRequired.style.visibility = "hidden"
+    } else if (!loginUsernameInput.match(letters)) {
+        loginUnameRequired.style.visibility = "visible"
+    }
+
+    if(!loginUsernameInput.match(numbers)) {
+        loginUnameUnique.style.visibility = "hidden"
+    }else if(loginUsernameInput.match(numbers) || loginUnameUnique.match(letterNumber)) {
+        loginUnameUnique.style.visibility = "visible"
+    }
+}
+
+
+
+</script>
 {% endblock content %}

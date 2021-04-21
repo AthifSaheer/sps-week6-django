@@ -1,0 +1,33 @@
+{% extends 'admintemplate/base.html' %}
+{% load static %}
+{% block title %} User Creation {% endblock title %}
+
+{% block content %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Django Admin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+            <li class="nav-item"><a class="nav-link pr-3" href="{% url 'adminhome' %}">Go to Home</a></li>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+
+<div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h4>Are you statisfied to deleting this?</h4>
+        <button class="btn btn-info btn-sm">Yes</button>
+    </form>
+    <a class="btn btn-info btn-sm" href="{% url 'adminhome' %}">No</a>
+</div>
+
+
+{% endblock content %}

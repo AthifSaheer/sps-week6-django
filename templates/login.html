@@ -15,90 +15,129 @@
 				{% csrf_token %}
 				<img src="{% static 'img/avatar.svg' %}">
 				<h2 class="title">Login</h2>
+				<p class="text-danger">{{ error }}</p>
            		<div class="input-div one">
            		   <div class="i">
            		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
-						<h5>{{ form.username.label }}</h5>
-						<img id="login-username-input" onfocus="usernameFunc()" onblur="hai()">{{ form.username }}</img>
+						  <h5>{{ form.username.label }}</h5>
+						<input type="text" name="username" onblur="usernameFunction()" id="login-username-input" class="form-control" {{ form.username }}
 					</div>
 				</div>
-				<small class="text-danger" id="login-uname-required">Username required</small>
+				
+				<small class="text-danger" id="login-uname-required">*Username required</small>
+				<small class="text-danger" id="login-uname-unique">*Username not valid numbers</small>
+
 				<div class="input-div pass">
 					<div class="i"> 
 						<i class="fas fa-lock"></i>
 					</div>
 					<div class="div">
 						<h5>{{ form.password.label }}</h5>
-						<img id="login-password-input">{{ form.password }}</img>
+						<input type="password" name="password" onblur="passwordFunction()" id="login-password-input" minlength="4" class="form-control" {{ form.password }}
 					</div>
             	</div>
-				<small class="text-danger" id="login-pword-required">Password required</small>
-            	<a href="{% url 'register' %}"><span>Not a member yet?</span> Join now</a>
-            	<input type="submit" class="btn" value="Login" onclick="loginBtn()">
+				<small class="text-danger" id="login-pword-required">*Password required</small>
+				<small class="text-danger" id="login-min4-password">*Min 4 lenght</small>
+
+            	<a href="{% url 'register' %}" class="text-decoration-none text-muted"><span>Not a member yet?</span> Join now</a>
+            	<input type="submit" class="btn" onclick="loginBtn()" value="Login">
             </form>
 
         </div>
 		
     </div>
 
-	<style>
-		#login-uname-required {
-			visibility: hidden;
-		}
-		#login-pword-required {
-			visibility: hidden;
-		}
+<!-- <script src="{% static 'js/validation.js' %}"></script> -->
+
+<style>
+	
+	#login-uname-required, #login-uname-unique {
+		display: none;
+	}
+	#login-pword-required, #login-min4-password {
+		display: none;
+	}
 	</style>
-	
+
 <script>
+
+var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+
+function usernameFunction() {
+    
+    var loginUsernameInput = document.getElementById('login-username-input').value;
+    var loginUnameRequired = document.getElementById("login-uname-required")
+    var loginUnameUnique = document.getElementById("login-uname-unique")
+
+    if (loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'none';
+    } else if (!loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'block'
+    }
+
+    if(!loginUsernameInput.match(numbers)) {
+        loginUnameUnique.style.display = 'none';
+    }else if(loginUsernameInput.match(numbers)) {
+		loginUnameUnique.style.display = 'block'
+    }
 	
-	function hai() {
-		var loginUsernameInput = document.getElementById('login-username-input').value
-		console.log("-------" + loginUsernameInput)
-	}
-	
-	function usernameFunc() {
-		var numbers = /^[0-9]+$/;
-		var letters = /^[A-Za-z]+$/;
-		var letterNumber = /^[0-9a-zA-Z]+$/;
-		var symbol = /^[a-zA-Z0-9.]+@/;
+	// if (!loginUnameUnique.match(letterNumber)) {
+	// 	loginUnameUnique.style.display = 'none';
+	// }else if (loginUnameUnique.match(letterNumber)) {
+	// 	loginUnameUnique.style.display = 'block'
+	// }
+}
 
-		var loginUsernameInput = document.getElementById('login-username-input').value
-		var loginUnameRequired = document.getElementById("login-uname-required")
+function passwordFunction() {
 
-		if (loginUsernameInput.match(letterNumber)) {
-			loginUnameRequired.style.visibility = "hidden"
-		} else if (!loginUsernameInput.match(letterNumber)) {
-			loginUnameRequired.style.visibility = "visible"
-		}
+    var loginPasswordInput = document.getElementById('login-password-input').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required")
+    var loginPasswordMin = document.getElementById("login-min4-password")
+
+	if (!loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'none'
 	}
 
-	function loginBtn(){
-		var numbers = /^[0-9]+$/;
-		var letters = /^[A-Za-z]+$/;
-		var letterNumber = /^[0-9a-zA-Z]+$/;
-		var symbol = /^[a-zA-Z0-9.]+@/;
-		
-		var loginUsernameInput = document.getElementById("login-username-input").value
-		var loginPasswordInput = document.getElementById("login-password-input").value
+function loginBtn() {
+    
+	// Username ============================
+    var loginUsernameInput = document.getElementById('login-username-input').value;
+    var loginUnameRequired = document.getElementById("login-uname-required")
+    var loginUnameUnique = document.getElementById("login-uname-unique")
 
-		var loginUnameRequired = document.getElementById("login-uname-required")
-		var loginPwordRequired = document.getElementById("login-pword-required")
+    if (loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'none';
+    } else if (!loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'block'
+    }
 
-		if (loginUsernameInput.match(letterNumber)) {
-			loginUnameRequired.style.visibility = "visible"
-		} else if (!loginUnameRequired.match(letterNumber)) {
-			loginUnameRequired.style.visibility = "visible"
-		}
-		if (loginPasswordInput.match(letterNumber)) {
-			loginPwordRequired.style.visibility = "hidden"
-		} else {
-			loginPwordRequired.style.visibility = "visible"
-		}
+    if(!loginUsernameInput.match(numbers)) {
+        loginUnameUnique.style.display = 'none';
+    }else if(loginUsernameInput.match(numbers)) {
+		loginUnameUnique.style.display = 'block'
+    }
+
+	// Password =============================
+	var loginPasswordInput = document.getElementById('login-password-input').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required")
+    var loginPasswordMin = document.getElementById("login-min4-password")
+
+	if (!loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'none'
 	}
+
+}
+
+}
+
 </script>
-
-
 {% endblock content %}

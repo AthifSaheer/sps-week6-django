@@ -1,0 +1,22 @@
+a {
+    text-decoration: none;
+    color: tomato;
+    /* background: #000; */
+}
+
+
+#admin-text {
+    text-align: center;
+    color: teal;
+}
+
+.col-md-6 {
+    background: rgba(255, 255, 255, 0.521);
+}
+#a-tag {
+    text-decoration: none;
+    color: cornflowerblue;
+}
+#a-tag:hover {
+    color: rgb(70, 125, 226);
+}

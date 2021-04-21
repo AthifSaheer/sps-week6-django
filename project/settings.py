@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'django_filters',
+    
     'account.apps.AccountConfig',
     'adminpage.apps.AdminpageConfig',
 ]

@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <img class="wave" src="{% static 'img/wave.png' %}">
 <div class="container">
     <div class="img">
@@ -15,15 +16,18 @@
             {% csrf_token %}
             <img src="{% static 'img/avatar.svg' %}">
             <h2 class="title">Signup</h2>
+                <p class="text-danger">{{ password_error }}</p>
                <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>{{ form.username.label }}</h5>
-                        {{ form.username }}
+						<input type="text" name="username" onblur="usernameFunction()" id="login-username-input" class="form-control" {{ form.username }}
                     </div>
                 </div>
+                <small class="text-danger" id="login-uname-required">*Username required</small>
+                <small class="text-danger" id="login-uname-unique">*Username not valid numbers</small>
 
                 <div class="input-div one">
                     <div class="i">
@@ -31,9 +35,11 @@
                     </div>
                     <div class="div">
                         <h5>{{ form.email.label }}</h5>
-                        {{ form.email }}
+						<input type="email" name="email" onblur="emailFunction()" id="login-email-input" class="form-control" {{ form.email }}
                     </div>
                 </div>
+
+                <small class="text-danger" id="login-email-required">*Email required</small>
 
                 <div class="input-div pass">
                     <div class="i"> 
@@ -41,10 +47,12 @@
                     </div>
                     <div class="div">
                         <h5>{{ form.password.label }}</h5>
-                        {{ form.password }}
+						<input type="password" name="password" onblur="passwordFunction()" id="login-password-input" minlength="4" class="form-control" {{ form.password }}
                     </div>
                 </div>
 
+				<small class="text-danger" id="login-pword-required">*Password required</small>
+				<small class="text-danger" id="login-min4-password">*Min 4 lenght</small>
 
                 <div class="input-div pass">
                     <div class="i"> 
@@ -52,14 +60,185 @@
                     </div>
                     <div class="div">
                         <h5>{{ form.password_confirmation.label }}</h5>
-                        {{ form.password_confirmation }}
+						<input type="password" name="password" onblur="passwordFunction2()" id="login-password-input2" minlength="4" class="form-control" {{ form.password }}
                     </div>
                 </div>
-                <a href="{% url 'login' %}"><span>Already a member?</span> Sign In</a>
-            <input type="submit" class="btn" value="Signup">
+
+                <small class="text-danger" id="login-pword-required2">*Password required</small>
+				<small class="text-danger" id="login-min4-password2">*Min 4 lenght</small>
+
+                <a class="text-decoration-none text-muted" href="{% url 'login' %}"><span>Already a member?</span> Sign In</a>
+            <input type="submit" class="btn" onclick="signupBtn()" value="Signup">
         </form>
 
     </div>
 </div>
+
+<style>
+	
+	#login-uname-required, #login-uname-unique {
+		display: none;
+	}
+	#login-pword-required, #login-min4-password {
+		display: none;
+	}
+    #login-pword-required2, #login-min4-password2 {
+		display: none;
+	}
+    #login-email-required {
+        display: none;
+    }
+	</style>
+
+<script>
+    
+function usernameFunction() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+    
+    var loginUsernameInput = document.getElementById('login-username-input').value;
+    var loginUnameRequired = document.getElementById("login-uname-required")
+    var loginUnameUnique = document.getElementById("login-uname-unique")
+
+    if (loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'none';
+    } else if (!loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'block'
+    }
+
+    if(!loginUsernameInput.match(numbers)) {
+        loginUnameUnique.style.display = 'none';
+    }else if(loginUsernameInput.match(numbers)) {
+		loginUnameUnique.style.display = 'block'
+    }
+	
+	// if (!loginUnameUnique.match(letterNumber)) {
+	// 	loginUnameUnique.style.display = 'none';
+	// }else if (loginUnameUnique.match(letterNumber)) {
+	// 	loginUnameUnique.style.display = 'block'
+	// }
+}
+
+
+function passwordFunction() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+
+    var loginPasswordInput = document.getElementById('login-password-input').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required")
+    var loginPasswordMin = document.getElementById("login-min4-password")
+
+	if (!loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'none'
+	}
+
+    // if (loginPasswordInput < 4) {
+    //     loginPasswordMin.style.display = 'block'
+    // }
+}
+
+
+function passwordFunction2() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+
+    var loginPasswordInput = document.getElementById('login-password-input2').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required2")
+    var loginPasswordMin = document.getElementById("login-min4-password2")
+
+	if (!loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'none'
+	}
+
+    // if (loginPasswordInput < 4) {
+    //     loginPasswordMin.style.display = 'block'
+    // }
+}
+
+function emailFunction() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+
+    var loginEmailInput = document.getElementById('login-email-input').value;
+    var loginEmailRequired = document.getElementById("login-email-required")
+
+	if (!loginEmailInput.match(letterNumber)) {
+		loginEmailRequired.style.display = 'block'
+	}else if (loginEmailInput.match(letterNumber)) {
+		loginEmailRequired.style.display = 'none'
+	}
+}
+
+function signupBtn() {
+    var numbers = /^[0-9]+$/;
+    var letters = /^[A-Za-z]+$/;
+    var letterNumber = /^[0-9a-zA-Z]+$/;
+    var symbol = /^[a-zA-Z0-9.]+@/;
+    
+    // Username ==============================
+    var loginUsernameInput = document.getElementById('login-username-input').value;
+    var loginUnameRequired = document.getElementById("login-uname-required")
+    var loginUnameUnique = document.getElementById("login-uname-unique")
+
+    if (loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'none';
+    } else if (!loginUsernameInput.match(letterNumber)) {
+        loginUnameRequired.style.display = 'block'
+    }
+
+    if(!loginUsernameInput.match(numbers)) {
+        loginUnameUnique.style.display = 'none';
+    }else if(loginUsernameInput.match(numbers)) {
+		loginUnameUnique.style.display = 'block'
+    }
+
+    // password ===========================
+    var loginPasswordInput = document.getElementById('login-password-input').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required")
+    var loginPasswordMin = document.getElementById("login-min4-password")
+    
+	if (!loginPasswordInput.match(letterNumber)) {
+        loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+        loginPasswordRequired.style.display = 'none'
+	}
+    // password2 ===========================
+    var loginPasswordInput = document.getElementById('login-password-input2').value;
+    var loginPasswordRequired = document.getElementById("login-pword-required2")
+    var loginPasswordMin = document.getElementById("login-min4-password2")
+
+	if (!loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'block'
+	}else if (loginPasswordInput.match(letterNumber)) {
+		loginPasswordRequired.style.display = 'none'
+	}
+
+    // Email ===========================
+    var loginEmailInput = document.getElementById('login-email-input').value;
+    var loginEmailRequired = document.getElementById("login-email-required")
+
+	if (!loginEmailInput.match(letterNumber)) {
+		loginEmailRequired.style.display = 'block'
+	}else if (loginEmailInput.match(letterNumber)) {
+		loginEmailRequired.style.display = 'none'
+	}
+    
+
+}
+
+</script>
+
 
 {% endblock content %}

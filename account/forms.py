@@ -13,13 +13,16 @@ class UserRegistrationForm(forms.Form):
     }), label="Email")
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         "class": "input",
-        "type": "text",
+        "type": "password",
     }), label="Password")
     password_confirmation = forms.CharField(widget=forms.PasswordInput(attrs={
         "class": "input",
-        "type": "text",
+        "type": "password",
     }), label="Confirmation Password")
 
+    # class Meta:
+    #     model = 'User'
+    #     feilds = ['username']
 
     def clean_username(self):
         uname = self.cleaned_data.get("username")
@@ -37,3 +40,16 @@ class UserLoginForm(forms.Form):
         "type": "password",
     }), label="Password")
 
+class UserRegistrationFormForAdmin(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Username")
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        "class": "input",
+        "type": "text",
+    }), label="Email")
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']

@@ -1,73 +1,93 @@
-from django.shortcuts import render, redirect
-from django.views.generic import *
-# from.forms import AdminRegistrationForm
-from .models import AdminRegistration
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.contrib.sessions.models import Session
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.views.generic import *
+from .filters import UserFiler
+from account.forms import *
+from django.db.models import Q
+from django.views.decorators.cache import cache_control
 
 
-    # @method_decorator(login_required, name='dispatch')
-def AdminHomeView(request):
-    # if request.session.has_key('is_value'):
-    #     return render(request, 'admintemplate/home.html')
-    # return render(request, 'admintemplate/login.html')
-    return render(request, 'admintemplate/home.html')
-
-
-    
-def AdminRegistrationView(request):
-    
-    admin = AdminRegistration.objects.all()
-
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirmpassword = request.POST.get('confirmpassword')
-        print(username, email, confirmpassword)
-
-        if password == confirmpassword:
-            # if admin.user_name == username:
-            print("User name already exits")
-            # else:
-            admin_obj = AdminRegistration(user_name=username, email=email, password=password, confrim_password=confirmpassword)
-            admin_obj.save()
-            return render(request, 'admintemplate/home.html')
-        else:
-            print("password did not match")
-            return render(request, 'admintemplate/register.html')
-
-    return render(request, 'admintemplate/register.html')
-
-def AdminLoginView(request):
-    
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-
-    admin = AdminRegistration.objects.all()
-    # pwrod = AdminRegistration.objects.filter(password = password)
-    # uname = AdminRegistration.objects.filter(user_name = username)
-    admu = username == admin.user_name 
-    admp = password == admin.password
-    print(admu, admp)
-    # print(username,uname, password, pwrod)
-    if admu and admp:
-        # request.sessions['is_value'] = True
-        print("login succesfull")
-        return redirect('adminhome')
-    else:
-        print("Invalide creditials")
-    return render(request, 'admintemplate/login.html')
-
-
-def AdminLogoutView(request):
-    del request.sessions['is_value']
+# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def AdminHome(request):
+    if request.session.has_key('is_value'):
+        users = User.objects.all()
+        search = UserFiler(request.GET, queryset=User.objects.exclude(is_staff=1))
+        context = {'users':users, 'search':search}
+        return render(request, 'admintemplate/home.html', context)
     return redirect('adminlogin')
 
 
-# ===================================== Session ===================================================
+def AdminLogin(request):
+
+    if request.session.has_key('is_value'):
+        users = User.objects.all()
+        search = UserFiler(request.GET, queryset=User.objects.exclude(is_staff=1))
+        context = {'users':users, 'search':search}
+        return render(request, 'admintemplate/home.html', context)
+
+    username = 'admin'
+    password = 'admin'
+    
+    uname = request.POST.get('username')
+    pword = request.POST.get('password')
+
+    if username == uname and password == pword:
+        request.session['is_value'] = True
+        print("login succesfull")
+        return redirect('adminhome')
+    else:
+        error = "Invalide creditials"
+        print(error)
+        return render(request, 'admintemplate/login.html', {'error':error})
+
+
+def AdminLogout(request):
+    del request.session['is_value']
+    return redirect('adminlogin')
+
+class AdminUserCreate(CreateView):
+
+    def get(self, request):
+        form = UserRegistrationForm()
+        return render(request, 'admintemplate/usercreate.html', {'form':form})
+
+    def post(self, request):
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password_confirmation = request.POST.get('password_confirmation')
+        if password == password_confirmation:
+            print("user succesfully created")
+            user = User.objects.create_user(username, email, password_confirmation)
+            # user = request.save(commit=False)
+            # user.save()
+            return redirect('adminhome')
+        else:
+            print("password did not match")
+            return redirect('usercreate')
+        return redirect('usercreate') 
+
+class AdminUserEdit(UpdateView):
+    template_name = "admintemplate/useredit.html"
+    form_class = UserRegistrationFormForAdmin
+    # get_object_name = "adminhome1"
+    model = User
+    success_url = 'adminhome'
+
+    def get_success_url(self):
+        return reverse_lazy('adminhome')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class AdminUserDelete(DeleteView):
+    template_name = "admintemplate/userdelete.html"
+    model = User
+    success_url = "/adminpage"
+
