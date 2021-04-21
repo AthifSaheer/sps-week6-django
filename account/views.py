@@ -37,9 +37,11 @@ class RegistrationView(CreateView):
             login(request, user)
             return redirect('home')
         else:
-            print("password did not match")
-            return redirect('register')
-        return redirect('register')    
+            form = UserRegistrationForm()
+            pwrd_error = "password did not match"
+            print(pwrd_error)
+            return render(request, 'register.html', {'pword_error':pwrd_error, 'form':form})
+        # return redirect('register')
 
 
 class Login(View):

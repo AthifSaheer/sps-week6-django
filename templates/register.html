@@ -16,7 +16,7 @@
             {% csrf_token %}
             <img src="{% static 'img/avatar.svg' %}">
             <h2 class="title">Signup</h2>
-                <p class="text-danger">{{ password_error }}</p>
+                <p class="text-danger">{{ pword_error }}</p>
                <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-user"></i>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="div">
                         <h5>{{ form.password_confirmation.label }}</h5>
-						<input type="password" name="password" onblur="passwordFunction2()" id="login-password-input2" minlength="4" class="form-control" {{ form.password }}
+						<input type="password" name="password_confirmation" onblur="passwordFunction2()" id="login-password-input2" minlength="4" class="form-control" {{ form.password }}
                     </div>
                 </div>
 
@@ -174,10 +174,10 @@ function emailFunction() {
     var loginEmailInput = document.getElementById('login-email-input').value;
     var loginEmailRequired = document.getElementById("login-email-required")
 
-	if (!loginEmailInput.match(letterNumber)) {
-		loginEmailRequired.style.display = 'block'
-	}else if (loginEmailInput.match(letterNumber)) {
+	if (loginEmailInput.match(symbol)) {
 		loginEmailRequired.style.display = 'none'
+	}else if (!loginEmailInput.match(symbol)) {
+		loginEmailRequired.style.display = 'block'
 	}
 }
 
@@ -229,13 +229,11 @@ function signupBtn() {
     var loginEmailInput = document.getElementById('login-email-input').value;
     var loginEmailRequired = document.getElementById("login-email-required")
 
-	if (!loginEmailInput.match(letterNumber)) {
-		loginEmailRequired.style.display = 'block'
-	}else if (loginEmailInput.match(letterNumber)) {
+	if (loginEmailInput.match(symbol)) {
 		loginEmailRequired.style.display = 'none'
+	}else if (!loginEmailInput.match(symbol)) {
+		loginEmailRequired.style.display = 'block'
 	}
-    
-
 }
 
 </script>

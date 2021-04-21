@@ -64,9 +64,9 @@
 <script>
 
 var numbers = /^[0-9]+$/;
-    var letters = /^[A-Za-z]+$/;
-    var letterNumber = /^[0-9a-zA-Z]+$/;
-    var symbol = /^[a-zA-Z0-9.]+@/;
+var letters = /^[A-Za-z]+$/;
+var letterNumber = /^[0-9a-zA-Z]+$/;
+var symbol = /^[a-zA-Z0-9.]+@/;
 
 function usernameFunction() {
     
@@ -104,11 +104,11 @@ function passwordFunction() {
 	}else if (loginPasswordInput.match(letterNumber)) {
 		loginPasswordRequired.style.display = 'none'
 	}
+}
 
 function loginBtn() {
-    
-	// Username ============================
-    var loginUsernameInput = document.getElementById('login-username-input').value;
+
+	var loginUsernameInput = document.getElementById('login-username-input').value;
     var loginUnameRequired = document.getElementById("login-uname-required")
     var loginUnameUnique = document.getElementById("login-uname-unique")
 
@@ -124,7 +124,6 @@ function loginBtn() {
 		loginUnameUnique.style.display = 'block'
     }
 
-	// Password =============================
 	var loginPasswordInput = document.getElementById('login-password-input').value;
     var loginPasswordRequired = document.getElementById("login-pword-required")
     var loginPasswordMin = document.getElementById("login-min4-password")
@@ -134,9 +133,6 @@ function loginBtn() {
 	}else if (loginPasswordInput.match(letterNumber)) {
 		loginPasswordRequired.style.display = 'none'
 	}
-
-}
-
 }
 
 </script>

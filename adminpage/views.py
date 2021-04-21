@@ -24,25 +24,28 @@ def AdminHome(request):
 def AdminLogin(request):
 
     if request.session.has_key('is_value'):
-        users = User.objects.all()
-        search = UserFiler(request.GET, queryset=User.objects.exclude(is_staff=1))
-        context = {'users':users, 'search':search}
-        return render(request, 'admintemplate/home.html', context)
+        return render(request, 'admintemplate/home.html')
 
-    username = 'admin'
-    password = 'admin'
-    
-    uname = request.POST.get('username')
-    pword = request.POST.get('password')
+    if request.method == 'POST':
+        username = 'admin'
+        password = 'admin'
+        
+        uname = request.POST.get('username')
+        pword = request.POST.get('password')
 
-    if username == uname and password == pword:
-        request.session['is_value'] = True
-        print("login succesfull")
-        return redirect('adminhome')
+        if username == uname and password == pword:
+            request.session['is_value'] = True
+            print("login succesfull")
+            return redirect('adminhome')
+        else:
+            # messages.info(request, "Invalide creditials")
+            error = "Invalide creditials"
+            return render(request, 'admintemplate/login.html', {'error':error})
+            # print(error)
+            # if username == uname and password == pword:
+            #     print('---------')
     else:
-        error = "Invalide creditials"
-        print(error)
-        return render(request, 'admintemplate/login.html', {'error':error})
+        return render(request, 'admintemplate/login.html')
 
 
 def AdminLogout(request):
