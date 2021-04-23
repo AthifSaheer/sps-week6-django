@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.cache import cache_control
 from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
@@ -7,8 +8,6 @@ from django.contrib import messages
 from django.views.generic import *
 from .filters import UserFiler
 from account.forms import *
-from django.db.models import Q
-from django.views.decorators.cache import cache_control
 
 
 # @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -38,12 +37,9 @@ def AdminLogin(request):
             print("login succesfull")
             return redirect('adminhome')
         else:
-            # messages.info(request, "Invalide creditials")
             error = "Invalide creditials"
             return render(request, 'admintemplate/login.html', {'error':error})
-            # print(error)
-            # if username == uname and password == pword:
-            #     print('---------')
+
     else:
         return render(request, 'admintemplate/login.html')
 
@@ -63,11 +59,10 @@ class AdminUserCreate(CreateView):
         email = request.POST.get('email')
         password = request.POST.get('password')
         password_confirmation = request.POST.get('password_confirmation')
+        
         if password == password_confirmation:
             print("user succesfully created")
             user = User.objects.create_user(username, email, password_confirmation)
-            # user = request.save(commit=False)
-            # user.save()
             return redirect('adminhome')
         else:
             print("password did not match")
@@ -77,7 +72,6 @@ class AdminUserCreate(CreateView):
 class AdminUserEdit(UpdateView):
     template_name = "admintemplate/useredit.html"
     form_class = UserRegistrationFormForAdmin
-    # get_object_name = "adminhome1"
     model = User
     success_url = 'adminhome'
 

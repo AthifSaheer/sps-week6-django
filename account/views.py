@@ -1,6 +1,6 @@
+from django.views.decorators.cache import cache_control, never_cache
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_control, never_cache
 from.forms import UserRegistrationForm, UserLoginForm
 from django.utils.decorators import method_decorator
 from django.contrib.sessions.models import Session
@@ -41,7 +41,6 @@ class RegistrationView(CreateView):
             pwrd_error = "password did not match"
             print(pwrd_error)
             return render(request, 'register.html', {'pword_error':pwrd_error, 'form':form})
-        # return redirect('register')
 
 
 class Login(View):
