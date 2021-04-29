@@ -23,8 +23,11 @@ def HomeView(request):
 class RegistrationView(CreateView):
 
     def get(self, request):
-        form = UserRegistrationForm()
-        return render(request, 'register.html', {'form':form})
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            form = UserRegistrationForm()
+            return render(request, 'register.html', {'form':form})
 
     def post(self, request):
         username = request.POST.get('username')
@@ -53,6 +56,7 @@ class Login(View):
             return render(request, 'login.html', {'form':form})
 
     def post(self, request):
+        # if request.is_ajax():
         username = request.POST.get('username')
         password = request.POST.get('password')
         usr = authenticate(request, username=username, password=password)
@@ -66,7 +70,7 @@ class Login(View):
             print(error)
             form = UserLoginForm()
             return render(request, 'login.html', {'error':error, 'form':form})
-        
+
         
 
 
